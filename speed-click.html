@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Speed Click с ставкой</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 20px;
+  }
+  #betContainer {
+    margin-bottom: 20px;
+  }
+  #gameArea {
+    position: relative;
+    width: 600px;
+    height: 300px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    background-color: #f0f0f0;
+  }
+  #directionArrow {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 125px; /* по центру по вертикали */
+    left: 0;
+    background-image: url('https://i.imgur.com/2XqYZXe.png'); /* стрелка вверх, замените на подходящее изображение или используйте CSS */
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform linear;
+  }
+  #centerCircle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150px;
+    height: 150px;
+    margin-top: -75px;
+    margin-left: -75px;
+    border: 3px solid red;
+    border-radius: 50%;
+    box-sizing: border-box;
+  }
+  #timeLeft {
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Speed Click с ставкой</h1>
+<div id="betContainer">
+  <label>Введите сумму ставки: </label>
+  <input type="number" id="betAmount" min="1" value="10" />
+  <button id="startGameBtn">Начать игру</button>
+</div>
+
+<div id="gameArea" style="display:none;">
+  <div id="directionArrow"></div>
+  <div id="centerCircle"></div>
+  <div id="statusMessage"></div>
+  <div id="timeLeft"></div>
+</div>
+
+<script>
+let gameInterval, animationFrame, animationProgress = 0;
+let direction = 1; // направление движения
+let gameActive = false;
+let greenZoneStart = 0.4; // 40% прогресс
+let greenZoneEnd = 0.6; // 60%
+let moveSpeed = 0.02; // скорость движения, увеличьте для скорости
+
+const arrow = document.getElementById('directionArrow');
+const gameArea = document.getElementById('gameArea');
+const startBtn = document.getElementById('startGameBtn');
+const statusMessage = document.getElementById('statusMessage');
+const timeDisplay = document.getElementById('timeLeft');
+
+startBtn.addEventListener('click', () => {
+  const bet = parseFloat(document.getElementById('betAmount').value);
+  if (isNaN(bet) || bet <= 0) {
+    alert('Неверная ставка');
+    return;
+  }
+
+  localStorage.setItem('currentBet', bet);
+  startGame();
+});
+
+function startGame() {
+  document.getElementById('betContainer').style.display = 'none';
+  gameArea.style.display = 'block';
+  statusMessage.textContent = '';
+  timeDisplay.textContent = '';
+  animationProgress = 0;
+  greenZoneStart = Math.random() * 0.4;
+  greenZoneEnd = greenZoneStart + 0.2; // диапазон 20%
+  gameActive = true;
+  const startTime = Date.now();
+  let gameDuration = 30; // секунды
+  let timeLeft = gameDuration;
+
+  // Обновление таймера
+  const timer = setInterval(() => {
+    timeLeft--;
+    timeDisplay.textContent = 'Времени: ' + timeLeft + ' секунд';
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      endGame(false);
+    }
+  }, 1000);
+
+  // Анимация стрелки
+  function animate() {
+    if (!gameActive) return;
+    animationProgress += moveSpeed * direction;
+    if (animationProgress >= 1) {
+      animationProgress = 1;
+      direction = -1;
+    } else if (animationProgress <= 0) {
+      animationProgress = 0;
+      direction = 1;
+    }
+    // Перемещение стрелки
+    const translateX = animationProgress * (gameArea.clientWidth - arrow.clientWidth);
+    arrow.style.transform = 'translateX(' + translateX + 'px)';
+    animationFrame = requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  // Обработка клика
+  gameArea.addEventListener('click', () => {
+    if (!gameActive) return;
+    // Проверка, внутри ли зеленая зона
+    if (
+      animationProgress >= greenZoneStart &&
+      animationProgress <= greenZoneEnd
+    ) {
+      // Победа!
+      endGame(true);
+    } else {
+      // Попытка не удалась
+      endGame(false);
+    }
+  });
+}
+
+function endGame(win) {
+  gameActive = false;
+  cancelAnimationFrame(animationFrame);
+  if (win) {
+    // Удваиваем ставку
+    const bet = parseFloat(localStorage.getItem('currentBet')) || 10;
+    const winnings = bet * 2;
+
+    // Обновляем баланс
+    let users = JSON.parse(localStorage.getItem('users')) || {};
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      users[currentUser].balance += winnings;
+      // Запоминаем транзакцию
+      users[currentUser].transactions.push({
+        type: 'Выигрыш',
+        amount: winnings,
+        date: new Date().toLocaleString()
+      });
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+    alert('Успех! Ваша ставка удвоена: +' + winnings + ' МС.');
+  } else {
+    alert('Неудача! Попробуйте еще раз.');
+  }
+  // Возвращаемся назад
+  window.location.href = 'index.html';
+}
+</script>
+
+</body>
+</html>

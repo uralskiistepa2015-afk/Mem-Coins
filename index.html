@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mem-coin — Главная</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>Mem-coin — Главная</header>
+<div class="container">
+<h2>Добро пожаловать!</h2>
+<p>Ваш баланс: <span id="balanceDisplay"></span></p>
+<button id="logoutBtn">Выйти</button>
+
+<h3>Перевод MC</h3>
+<form id="transferForm">
+  <label>Кому:</label>
+  <input type="text" id="recipient" required />
+  <label>Сумма MC:</label>
+  <input type="number" id="amount" required min="1" />
+  <button type="submit">Перевести</button>
+</form>
+<div id="transferMessage" class="message"></div>
+
+<h3>История транзакций</h3>
+<table border="1" cellpadding="5" cellspacing="0" style="width:100%; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th>Тип</th>
+      <th>От</th>
+      <th>Кому</th>
+      <th>Сумма</th>
+      <th>Дата</th>
+    </tr>
+  </thead>
+  <tbody id="transactionsTable"></tbody>
+</table>
+
+<h3>Мини-игра: Крестики-нолики</h3>
+<button id="playButton">Играть</button>
+
+<!-- Модалка для крестиков-ноликов -->
+<div id="ticTacToeModal">
+  <div id="ticTacToeContent">
+    <h4>Крестики-нолики</h4>
+    <div id="ticTacToeGame"></div>
+    <button id="closeGame">Закрыть</button>
+  </div>
+</div>
+</div>
+<div id="balanceDisplay"></div>
+<script src="script.js"></script>
+<script>
+  // Проверка авторизации
+  if(!localStorage.getItem('currentUser')) {
+    window.location.href='register.html';
+  }
+</script>
+<button id="speedClickBetBtn" style="margin-left: 10px;">Speed Click с ставкой</button>
+</body>
+</html>

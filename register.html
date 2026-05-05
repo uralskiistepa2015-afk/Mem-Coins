@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Регистрация - Mem-coin</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>Mem-coin — Регистрация</header>
+<div class="container">
+<h2>Создайте аккаунт</h2>
+<form id="registerForm">
+    <label>Имя пользователя:</label>
+    <input type="text" id="username" required />
+    <label>Пароль:</label>
+    <input type="password" id="password" required minlength="6" />
+    <button type="submit">Зарегистрироваться</button>
+</form>
+<div id="registerMessage" class="message"></div>
+</div>
+<script src="script.js"></script>
+<script>
+  if(localStorage.getItem('currentUser')) {
+    window.location.href = 'index.html';
+  }
+</script>
+</body>
+</html>
