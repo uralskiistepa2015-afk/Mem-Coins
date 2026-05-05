@@ -168,11 +168,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Проверьте, что есть элементы для поля и крестиков-ноликов
   // и подключите схему обработки.
   // Для примера, вот шаблон:
-  // (Если есть, вставьте сюда или скажите, я помогу)
   const regForm = document.getElementById("registerForm")
-  if (regForm)
+  if {(regForm)
     regForm.addEventListener("submit", (e) =>)
-    e.preventDefault();
+    e.preventDefault});
 
     const name = document.getElementById("username").value;
     localStorage.setItem("currentUser", name);
