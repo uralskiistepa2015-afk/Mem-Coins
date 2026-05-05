@@ -169,9 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // и подключите схему обработки.
   // Для примера, вот шаблон:
   const regForm = document.getElementById("registerForm")
-    regForm.addEventListener("submit", (e) =>)
-    e.preventDefault});
-
+    regForm.addEventListener("submit", (e) => {
+    e.preventDefault();
     const name = document.getElementById("username").value;
     localStorage.setItem("currentUser", name);
     let allUsers = JSON.parse(localStorage.getItem("users")) ||{};
@@ -179,3 +178,5 @@ document.addEventListener('DOMContentLoaded', () => {
       allUsers[name] = {balance: 100, transactions: [] };
 
       window.location.href ="index.html";
+    });
+}
