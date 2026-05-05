@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Для примера, вот шаблон:
   // (Если есть, вставьте сюда или скажите, я помогу)
   const regForm = document.getElementById("registerForm")
-  if (regForm) {
+  if (regForm)
     regForm.addEventListener("submit", (e) =>)
     e.preventDefault();
 
