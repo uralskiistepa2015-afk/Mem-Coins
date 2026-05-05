@@ -162,12 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Кнопка старт
     startBtn?.addEventListener('click', startGame);
   }
-
-  // ==============================
-  // ПОМОЩИ ДЛЯ КРЕСТИКОВ НОЛИКОВ:
-  // Проверьте, что есть элементы для поля и крестиков-ноликов
-  // и подключите схему обработки.
-  // Для примера, вот шаблон:
   const regForm = document.getElementById("registerForm")
     regForm.addEventListener("submit", (e) => {
     e.preventDefault();
