@@ -169,7 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // и подключите схему обработки.
   // Для примера, вот шаблон:
   const regForm = document.getElementById("registerForm")
-  if {(regForm)
     regForm.addEventListener("submit", (e) =>)
     e.preventDefault});
 
