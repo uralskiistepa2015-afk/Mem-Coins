@@ -181,5 +181,3 @@ document.addEventListener('DOMContentLoaded', () => {
       allUsers[name] = {balance: 100, transactions: [] };
 
       window.location.href ="index.html";
-      
-});
